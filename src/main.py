@@ -1,6 +1,6 @@
 from pathlib import Path
-from Classes import Category
-from Functions import load_data, created_objects
+from src.Classes import Category
+from src.Functions import load_data, created_objects
 
 
 def main():

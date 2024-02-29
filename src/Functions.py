@@ -1,5 +1,5 @@
 import json
-from Classes import Category
+from src.Classes import Category
 
 
 def load_data(data):
