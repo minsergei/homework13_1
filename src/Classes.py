@@ -23,10 +23,21 @@ class Category:
         self.name_category = name
         self.description = description
         self.products = products
-        self.products_objects = []
+        self.__products_objects = []
         Category.number_of_category += 1
+
+    def add_products(self, product):
+        self.__products_objects.append(product)
+        print(self.products_objectsproducts_objects)
 
     def create_product(self):
         for item in self.products:
-            self.products_objects.append(Product(item['name'], item['description'], item['price'], item['quantity']))
+            self.__products_objects.append(Product(item['name'], item['description'], item['price'], item['quantity']))
             Category.number_of_product += 1
+
+
+x = Category("abs", "312312", "dsa")
+
+x.add_products("gdfgdf")
+print(x.name_category)
+print(x.__products_objects)

@@ -11,8 +11,10 @@ def main():
     # Создаём объекты и получаем список объектов класса Категория
     list_class_category = created_objects(data_file_load)
 
+
     # Проверка заполнения классов объектами
     for item in list_class_category:
+        print(item.__products_objects)
         if item.name_category == 'Смартфоны':
             print(f'{item.name_category}:\n')
             for item1 in item.products_objects:
