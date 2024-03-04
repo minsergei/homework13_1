@@ -76,12 +76,16 @@ def count():
     # Загружаем данные из файла
     data_file_load = load_data(all_data)
     # Создаём объекты и получаем список объектов класса Категория
-    created_objects(data_file_load)
-    return Category
+    list_category = created_objects(data_file_load)
+    return Category, list_category
 
 
 def test_count_classes(count):
-    assert count.number_of_category == 3
-    assert count.number_of_product == 7
+    assert count[0].number_of_category == 3
+    assert count[0].number_of_product == 7
 
+def test222(count):
+    for i in count[1]:
+        if i.name_category == 'Процессоры':
+            assert len(i.get_product) == 2
 # pytest --cov src --cov-report term-missing
