@@ -1,6 +1,6 @@
 from pathlib import Path
-from src.Classes import Category
-from src.Functions import load_data, created_objects
+from Classes import Category, Product
+from Functions import load_data, created_objects
 
 
 def main():
@@ -14,19 +14,20 @@ def main():
 
     # Проверка заполнения классов объектами
     for item in list_class_category:
-        print(item.__products_objects)
-        if item.name_category == 'Смартфоны':
-            print(f'{item.name_category}:\n')
-            for item1 in item.products_objects:
-                print(f'{item1.name_product} - {item1.description} - по цене {item1.price} руб - '
-                      f'в количестве {item1.quantity} штук')
+        print(item.description)
+        products = item.get_product_info
+        for i in range(len(products)):
+            print(products[i])
 
-    print(f'\nКоличество объектов класса "Категория" - {Category.number_of_category}')
-    print(f'Количество объектов класса "Продукты" - {Category.number_of_product}\n')
 
-    for item in list_class_category:
-        print(f'{item.name_category} - Объекты в категории {item.products_objects}')
-    print(f'\nОбъекты категорий - {list_class_category}')
+
+
+    # print(f'\nКоличество объектов класса "Категория" - {Category.number_of_category}')
+    # print(f'Количество объектов класса "Продукты" - {Category.number_of_product}\n')
+    #
+    # for item in list_class_category:
+    #     print(f'{item.name_category} - Объекты в категории {item.get_product}')
+    # print(f'\nОбъекты категорий - {list_class_category}')
 
 
 if __name__ == '__main__':

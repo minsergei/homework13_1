@@ -82,6 +82,6 @@ def count():
 
 def test_count_classes(count):
     assert count.number_of_category == 3
-    assert count.number_of_product == 6
+    assert count.number_of_product == 7
 
 # pytest --cov src --cov-report term-missing
