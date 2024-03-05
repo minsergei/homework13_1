@@ -119,9 +119,13 @@ def test_create_product(add_product_category):
     """
     assert len(add_product_category[1].all_objects_product) == 2
     assert add_product_category[1].number_of_product == 2
+    list1 = []
+    list2 = []
     for i in add_product_category[1].all_objects_product:
-        assert i.quantity == 12 or 3
-        assert i.price == 23000.0 or 160000.0
+        list1.append(i.quantity)
+        list2.append(i.get_price)
+    assert list1 == [12, 3]
+    assert list2 == [23000.0, 160000.0]
     Category.number_of_category = 0
     Category.number_of_product = 0
 
