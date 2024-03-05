@@ -14,15 +14,15 @@ def main():
     # Проверка заполнения классов объектами
     # for item in list_class_category:
     #     print(item.name_category)
-    #     item.get_product_info
-
+    #     print(item.get_product_info)
+    #
     # print(f'\nКоличество объектов класса "Категория" - {Category.number_of_category}')
     # print(f'Количество объектов класса "Продукты" - {Category.number_of_product}\n')
     #
     # for item in list_class_category:
     #     print(f'{item.name_category} - Объекты в категории {item.get_product}')
     # print(f'\nОбъекты категорий - {list_class_category}')
-
+    #
     # new_cat = Category("Telephone", "Лучшие телефоны")
     #
     # new_product = Product.create_product('Samsung Galaxy23', 'Флагман', 23000.0, 12, Category.all_objects_product)
@@ -33,6 +33,7 @@ def main():
     # new_cat.add_products(new_product3)
     # print(Category.number_of_category)
     # print(Category.number_of_product)
+
 
 if __name__ == '__main__':
     main()

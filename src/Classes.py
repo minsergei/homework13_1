@@ -7,7 +7,7 @@ class Product:
     def __init__(self, name, description, price, quantity):
         self.name_product = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
     @classmethod
@@ -25,32 +25,30 @@ class Product:
             for i in products:
                 if name == i.name_product:
                     i.quantity += quantity
-                    if i.price < price:
-                        i.price = price
+                    if i.get_price < price:
+                        i.get_price = price
         else:
             product = cls(name, description, price, quantity)
             return product
 
     @property
     def get_price(self):
-        if self.price <= 0:
-            print('Цена введена некорректная')
-        else:
-            print(self.price)
+        return self.__price
 
     @get_price.setter
     def get_price(self, new_price):
         if new_price <= 0:
-            print('Цена введена некорректная')
+            return print('Цена введена некорректная')
         else:
-            self.price = new_price
+            self.__price = new_price
 
     @get_price.deleter
     def get_price(self):
         x = input('Если уверены что хотите удалить введите Y\n')
         if x.lower() == 'y':
             print('Удаляем цену')
-            self.price = None
+            self.__price = None
+        return True
 
 
 class Category:
@@ -92,8 +90,10 @@ class Category:
         """
         Печатает список объектов продуктов категории в определенном формате
         """
+        list_data = []
         for item in self.__products_objects:
-            print(f'{item.name_product}, {item.price} руб. Остаток: {item.quantity} шт.')
+            list_data.append(f'{item.name_product}, {item.get_price} руб. Остаток: {item.quantity} шт.')
+        return list_data
 
     def create_product(self):
         """
@@ -102,21 +102,3 @@ class Category:
         for item in self.products:
             self.__products_objects.append(Product(item['name'], item['description'], item['price'], item['quantity']))
             Category.number_of_product += 1
-
-# new_cat = Category("Telephone", "Лучшие телефоны")
-
-# new_product = Product.create_product('Samsung Galaxy23', 'Флагман', 23000.0, 12, Category.all_objects_product)
-# new_cat.add_products(new_product)
-# new_product2 = Product.create_product('Apone 13', '231231221', 150000.0, 2, Category.all_objects_product)
-# new_cat.add_products(new_product2)
-# new_product3 = Product.create_product('Apone 13', '231231221', 160000.0, 1, Category.all_objects_product)
-# new_cat.add_products(new_product3)
-#
-#
-# new_cat.get_product_info
-
-
-# new_product2.get_price
-# del new_product2.get_price
-# new_product2.get_price = 20000
-# new_product2.get_price
