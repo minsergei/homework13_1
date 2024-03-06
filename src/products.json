@@ -16,10 +16,28 @@
         "quantity": 8
       },
       {
-        "name": "Xiaomi Redmi Note 11",
+        "name": "Xiaomi",
         "description": "1024GB, Синий",
         "price": 31000.0,
         "quantity": 14
+      },
+      {
+        "name": "Xiaomi",
+        "description": "1024GB, Синий",
+        "price": 35000.0,
+        "quantity": 16
+      }
+    ]
+  },
+  {
+    "name": "Телевизоры",
+    "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
+    "products": [
+      {
+        "name": "55\" QLED 4K",
+        "description": "Фоновая подсветка",
+        "price": 123000.0,
+        "quantity": 7
       }
     ]
   },

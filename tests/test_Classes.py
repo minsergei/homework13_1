@@ -6,20 +6,7 @@ from src.Functions import load_data, created_objects
 
 @pytest.fixture()
 def category_smart():
-    return Category('Смартфон', 'Самые лучшие', [
-        {
-            "name": "Samsung Galaxy C23 Ultra",
-            "description": "256GB, Серый цвет, 200MP камера",
-            "price": 180000.0,
-            "quantity": 5
-        },
-        {
-            "name": "Xiaomi Redmi Note 11",
-            "description": "1024GB, Синий",
-            "price": 31000.0,
-            "quantity": 14
-        }
-    ])
+    return Category('Смартфон', 'Самые лучшие')
 
 
 def test_category_number(category_smart):
@@ -27,31 +14,11 @@ def test_category_number(category_smart):
     Category.number_of_category = 0
 
 
-def test_product_number(category_smart):
-    category_smart.create_product()
-    assert category_smart.number_of_product == 2
-    Category.number_of_category = 0
-    Category.number_of_product = 0
-
-
 def test_category(category_smart):
     assert category_smart.name_category == 'Смартфон'
     assert category_smart.description == 'Самые лучшие'
-    assert category_smart.products == [
-        {
-            "name": "Samsung Galaxy C23 Ultra",
-            "description": "256GB, Серый цвет, 200MP камера",
-            "price": 180000.0,
-            "quantity": 5
-        },
-        {
-            "name": "Xiaomi Redmi Note 11",
-            "description": "1024GB, Синий",
-            "price": 31000.0,
-            "quantity": 14
-        }
-    ]
     Category.number_of_category = 0
+    Category.number_of_product = 0
 
 
 @pytest.fixture()
@@ -64,6 +31,8 @@ def test_product(product_smart):
     assert product_smart.description == '256Гб'
     assert product_smart.price == 10000.0
     assert product_smart.quantity == 14
+    Category.number_of_category = 0
+    Category.number_of_product = 0
 
 
 @pytest.fixture()
@@ -76,12 +45,70 @@ def count():
     # Загружаем данные из файла
     data_file_load = load_data(all_data)
     # Создаём объекты и получаем список объектов класса Категория
-    created_objects(data_file_load)
+    list_category = created_objects(data_file_load)
     return Category
+
+
+def test_get_product(count):
+    for i in count.all_objects_category:
+        if i.name_category == 'Процессоры':
+            assert len(i.get_product) == 2
+    Category.number_of_category = 0
+    Category.number_of_product = 0
+    Category.all_objects_product = []
+    Category.all_objects_category = []
 
 
 def test_count_classes(count):
     assert count.number_of_category == 3
-    assert count.number_of_product == 6
+    assert count.number_of_product == 7
+    Category.number_of_category = 0
+    Category.number_of_product = 0
+    Category.all_objects_product = []
+    Category.all_objects_category = []
+
+
+@pytest.fixture()
+def add_product_category():
+    new_cat = Category("Telephone", "Лучшие телефоны")
+
+    new_product = Product.create_product('Samsung Galaxy23', 'Флагман', 23000.0, 12, Category.all_objects_product)
+    new_cat.add_products(new_product)
+    new_product2 = Product.create_product('Apone 13', 'The best', 150000.0, 1, Category.all_objects_product)
+    new_cat.add_products(new_product2)
+    new_product3 = Product.create_product('Apone 13', 'The best', 160000.0, 2, Category.all_objects_product)
+    new_cat.add_products(new_product3)
+
+    return Category
+
+
+def test_create_product(add_product_category):
+    """
+    проверяем создание объктов и проверяем, что объект с таким же именем
+    не создается, а его количевство складывается и выбирается большая цена
+    """
+    assert len(Category.all_objects_product) == 2
+    assert Category.number_of_product == 2
+    list1 = []
+    list2 = []
+    for i in Category.all_objects_product:
+        list1.append(i.quantity)
+        list2.append(i.price)
+    assert list1 == [12, 3]
+    assert list2 == [23000.0, 160000.0]
+    Category.number_of_category = 0
+    Category.number_of_product = 0
+
+
+def test_price():
+    new_cat = Category("Telephone", "Лучшие телефоны")
+    new_product = Product('Samsung Galaxy23', 'Флагман', 23000.0, 12)
+    new_cat.add_products(new_product)
+    assert new_product.price == 23000.0
+    new_product.price = 0
+    assert new_product.price == 23000.0
+    new_product.price = 25000.0
+    assert new_product.price == 25000.0
+    assert "".join(new_cat.get_product_info) == 'Samsung Galaxy23, 25000.0 руб. Остаток: 12 шт.'
 
 # pytest --cov src --cov-report term-missing

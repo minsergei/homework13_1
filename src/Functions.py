@@ -1,5 +1,5 @@
 import json
-from src.Classes import Category
+from src.Classes import Category, Product
 
 
 def load_data(data):
@@ -13,13 +13,14 @@ def load_data(data):
 
 def created_objects(data_file_load):
     """
-    создаём объекты класса продукты в аргументах объекта класса категории
+    создаём объекты класса категории и объекты класса продукты в аргументах объекта класса категории по json файлу
+    и отсеиваем с одинаковым названием
     """
-    list_class_category = []
+
     for item in data_file_load:
-        list_class_category.append(Category(item['name'], item['description'], item['products']))
-
-    for item in list_class_category:
-        item.create_product()
-
-    return list_class_category
+        new_category = Category.create_category(item['name'], item['description'], Category.all_objects_category)
+        for item2 in item['products']:
+            new_product = Product.create_product(item2['name'], item2['description'], item2['price'],
+                                                 item2['quantity'], Category.all_objects_product)
+            new_category.add_products(new_product)
+    return None
