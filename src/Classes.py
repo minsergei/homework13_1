@@ -11,39 +11,39 @@ class Product:
         self.quantity = quantity
 
     @classmethod
-    def create_product(cls, name: str, description: str, price: float, quantity: int, products: list):
+    def create_product(cls, *args):
         """
         метод создания объекта продукта с условием отбора одинаковых имен
         """
         product_name = []
-        for i in products:
+        for i in args[4]:
             product_name.append(i.name_product)
-        if len(products) == 0:
-            product = cls(name, description, price, quantity)
+        if len(args[4]) == 0:
+            product = cls(args[0], args[1], args[2], args[3])
             return product
-        elif name in product_name:
-            for i in products:
-                if name == i.name_product:
-                    i.quantity += quantity
-                    if i.get_price < price:
-                        i.get_price = price
+        elif args[0] in product_name:
+            for i in args[4]:
+                if args[0] == i.name_product:
+                    i.quantity += args[3]
+                    if i.price < args[2]:
+                        i.price = args[2]
         else:
-            product = cls(name, description, price, quantity)
+            product = cls(args[0], args[1], args[2], args[3])
             return product
 
     @property
-    def get_price(self):
+    def price(self):
         return self.__price
 
-    @get_price.setter
-    def get_price(self, new_price):
+    @price.setter
+    def price(self, new_price):
         if new_price <= 0:
             return print('Цена введена некорректная')
         else:
             self.__price = new_price
 
-    @get_price.deleter
-    def get_price(self):
+    @price.deleter
+    def price(self):
         x = input('Если уверены что хотите удалить введите Y\n')
         if x.lower() == 'y':
             print('Удаляем цену')
@@ -54,25 +54,46 @@ class Product:
 class Category:
     name_category = str
     description = str
-    products = list
-    __products_objects = list
+    __products = list
     number_of_category = 0
     number_of_product = 0
+    all_objects_category = []
     all_objects_product = []
 
-    def __init__(self, name, description, products=None):
+    def __init__(self, name, description):
         self.name_category = name
         self.description = description
-        self.products = products
-        self.__products_objects = []
+        self.__products = []
         Category.number_of_category += 1
+
+    @classmethod
+    def create_category(cls, *args):
+        """
+        метод создания объекта категории с условием отбора одинаковых имен
+        """
+        category_name = []
+        for i in args[2]:
+            category_name.append(i.name_category)
+        if len(args[2]) == 0:
+            category = cls(args[0], args[1])
+            Category.all_objects_category.append(category)
+            return category
+        elif args[0] in category_name:
+            for i in args[2]:
+                if args[0] == i.name_category:
+                    break
+        else:
+            category = cls(args[0], args[1])
+            Category.all_objects_category.append(category)
+            return category
+        print(category_name)
 
     def add_products(self, product):
         """
         добавляем продукт в список продуктов атрибута категории и список продуктов атрибута класса
         """
         if isinstance(product, Product):
-            self.__products_objects.append(product)
+            self.__products.append(product)
             self.all_objects_product.append(product)
             Category.number_of_product += 1
         else:
@@ -83,7 +104,7 @@ class Category:
         """
         Возвращает список объектов продуктов
         """
-        return self.__products_objects
+        return self.__products
 
     @property
     def get_product_info(self):
@@ -91,14 +112,6 @@ class Category:
         Печатает список объектов продуктов категории в определенном формате
         """
         list_data = []
-        for item in self.__products_objects:
-            list_data.append(f'{item.name_product}, {item.get_price} руб. Остаток: {item.quantity} шт.')
+        for item in self.__products:
+            list_data.append(f'{item.name_product}, {item.price} руб. Остаток: {item.quantity} шт.')
         return list_data
-
-    def create_product(self):
-        """
-        Создаем продукты из файла json
-        """
-        for item in self.products:
-            self.__products_objects.append(Product(item['name'], item['description'], item['price'], item['quantity']))
-            Category.number_of_product += 1
