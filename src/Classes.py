@@ -38,7 +38,7 @@ class Product:
     @price.setter
     def price(self, new_price):
         if new_price <= 0:
-            return print('Цена введена некорректная')
+            return 'Цена введена некорректная'
         else:
             self.__price = new_price
 
@@ -81,12 +81,11 @@ class Category:
         elif args[0] in category_name:
             for i in args[2]:
                 if args[0] == i.name_category:
-                    break
+                    return i
         else:
             category = cls(args[0], args[1])
             Category.all_objects_category.append(category)
             return category
-        print(category_name)
 
     def add_products(self, product):
         """
@@ -97,7 +96,7 @@ class Category:
             self.all_objects_product.append(product)
             Category.number_of_product += 1
         else:
-            print('Не верный продукт')
+            return 'Не верный продукт'
 
     @property
     def get_product(self):
