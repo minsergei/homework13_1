@@ -10,6 +10,12 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f'{self.name_product}, {self.__price} руб. Остаток: {self.quantity} штук.'
+
+    def __add__(self, other):
+        return self.price * self.quantity + other.price * other.quantity
+
     @classmethod
     def create_product(cls, *args):
         """
@@ -65,6 +71,12 @@ class Category:
         self.description = description
         self.__products = []
         Category.number_of_category += 1
+
+    def __str__(self):
+        return f'{self.name_category}, количество продуктов: {len(self)} шт.'
+
+    def __len__(self):
+        return len(self.__products)
 
     @classmethod
     def create_category(cls, *args):

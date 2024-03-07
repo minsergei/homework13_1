@@ -45,14 +45,16 @@ def count():
     # Загружаем данные из файла
     data_file_load = load_data(all_data)
     # Создаём объекты и получаем список объектов класса Категория
-    list_category = created_objects(data_file_load)
+    created_objects(data_file_load)
     return Category
 
 
 def test_get_product(count):
     for i in count.all_objects_category:
         if i.name_category == 'Процессоры':
+            assert len(i) == 2
             assert len(i.get_product) == 2
+
     Category.number_of_category = 0
     Category.number_of_product = 0
     Category.all_objects_product = []
@@ -79,7 +81,7 @@ def add_product_category():
     new_product3 = Product.create_product('Apone 13', 'The best', 160000.0, 2, Category.all_objects_product)
     new_cat.add_products(new_product3)
 
-    return Category
+    return Category, new_product, new_product2
 
 
 def test_create_product(add_product_category):
@@ -98,17 +100,25 @@ def test_create_product(add_product_category):
     assert list2 == [23000.0, 160000.0]
     Category.number_of_category = 0
     Category.number_of_product = 0
+    Category.all_objects_product = []
+    Category.all_objects_category = []
 
 
 def test_price():
     new_cat = Category("Telephone", "Лучшие телефоны")
-    new_product = Product('Samsung Galaxy23', 'Флагман', 23000.0, 12)
+    new_product = Product('Samsung Galaxy23', 'Флагман', 23000.0, 1)
+    new_product2 = Product('Samsung Galaxy20', 'Флагман', 27000.0, 1)
     new_cat.add_products(new_product)
     assert new_product.price == 23000.0
     new_product.price = 0
     assert new_product.price == 23000.0
     new_product.price = 25000.0
     assert new_product.price == 25000.0
-    assert "".join(new_cat.get_product_info) == 'Samsung Galaxy23, 25000.0 руб. Остаток: 12 шт.'
+    assert "".join(new_cat.get_product_info) == 'Samsung Galaxy23, 25000.0 руб. Остаток: 1 шт.'
+    Category.number_of_category = 0
+    Category.number_of_product = 0
+    Category.all_objects_product = []
+    Category.all_objects_category = []
+    assert new_product + new_product2 == 52000.0
 
 # pytest --cov src --cov-report term-missing
