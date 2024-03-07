@@ -18,9 +18,14 @@ def created_objects(data_file_load):
     """
 
     for item in data_file_load:
-        new_category = Category.create_category(item['name'], item['description'], Category.all_objects_category)
+        product_list = []
         for item2 in item['products']:
             new_product = Product.create_product(item2['name'], item2['description'], item2['price'],
                                                  item2['quantity'], Category.all_objects_product)
-            new_category.add_products(new_product)
+            if new_product:
+                Category.all_objects_product.append(new_product)
+                product_list.append(new_product)
+        new_category = Category.create_category(item['name'], item['description'], product_list)
+        for i in product_list:
+            new_category.add_products_json(i)
     return None

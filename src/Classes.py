@@ -10,6 +10,12 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f'{self.name_product}, {self.__price} руб. Остаток: {self.quantity} штук.'
+
+    def __add__(self, other):
+        return self.price * self.quantity + other.price * other.quantity
+
     @classmethod
     def create_product(cls, *args):
         """
@@ -60,32 +66,33 @@ class Category:
     all_objects_category = []
     all_objects_product = []
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, products=[]):
         self.name_category = name
         self.description = description
-        self.__products = []
+        self.__products = products
         Category.number_of_category += 1
+
+    def __str__(self):
+        return f'{self.name_category}, количество продуктов: {len(self)} шт.'
+
+    def __len__(self):
+        return len(self.__products)
 
     @classmethod
     def create_category(cls, *args):
         """
         метод создания объекта категории с условием отбора одинаковых имен
         """
-        category_name = []
-        for i in args[2]:
-            category_name.append(i.name_category)
-        if len(args[2]) == 0:
-            category = cls(args[0], args[1])
-            Category.all_objects_category.append(category)
-            return category
-        elif args[0] in category_name:
-            for i in args[2]:
-                if args[0] == i.name_category:
-                    return i
-        else:
-            category = cls(args[0], args[1])
-            Category.all_objects_category.append(category)
-            return category
+        category = cls(args[0], args[1], args[2])
+        Category.all_objects_category.append(category)
+        return category
+
+    def add_products_json(self, product):
+        """
+        добавляем продукт в список продуктов атрибута класса
+        """
+        self.all_objects_product.append(product)
+        Category.number_of_product += 1
 
     def add_products(self, product):
         """
