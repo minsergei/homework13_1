@@ -71,6 +71,7 @@ class Category:
         self.description = description
         self.__products = products
         Category.number_of_category += 1
+        Category.number_of_product += len(self.__products)
 
     def __str__(self):
         return f'{self.name_category}, количество продуктов: {len(self)} шт.'
@@ -92,7 +93,6 @@ class Category:
         добавляем продукт в список продуктов атрибута класса
         """
         self.all_objects_product.append(product)
-        Category.number_of_product += 1
 
     def add_products(self, product):
         """
