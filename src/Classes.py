@@ -3,6 +3,7 @@ class Product:
     description = str
     price = float
     quantity = int
+    colour = str
 
     def __init__(self, name, description, price, quantity, colour='white'):
         self.name_product = name
@@ -15,6 +16,9 @@ class Product:
         return f'{self.name_product}, {self.__price} руб. Остаток: {self.quantity} штук.'
 
     def __add__(self, other):
+        """
+        Проверка сложения на соответствие класса
+        """
         if issubclass(type(other), self.__class__):
             return self.price * self.quantity + other.price * other.quantity
         else:
@@ -65,6 +69,10 @@ class Smartphone(Product):
     """
     Новый подклосс Смартфон
     """
+    efficiency = int
+    model = str
+    memory = int
+
     def __init__(self, name, description, price, quantity, colour, efficiency, model, memory):
         super().__init__(name, description, price, quantity, colour)
         self.efficiency = efficiency
@@ -76,6 +84,9 @@ class LawnGrass(Product):
     """
     Новый подклосс Газонная трава
     """
+    country = str
+    period = int
+
     def __init__(self, name, description, price, quantity, colour, country, period):
         super().__init__(name, description, price, quantity, colour)
         self.country = country

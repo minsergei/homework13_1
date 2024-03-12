@@ -107,8 +107,9 @@ def test_create_product(add_product_category):
 def test_price():
     new_cat_test = Category.create_category("Telephone", "Лучшие телефоны", [])
     new_product = Product('Samsung Galaxy23', 'Флагман', 23000.0, 2)
-    new_product2 = Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, 1, 'white', '1200ghz', 'Android13', 120)
-    new_product3 = LawnGrass("Трава", "Газонная", 250, 400, "Белая", 'Russia', 3)
+    new_smartphone = Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, 1, 'white', 1200, 'Android13', 120)
+    new_smartphone2 = Smartphone('Samsung 24', 'Флагман', 27000.0, 1, 'white', 1200, 'Android13', 120)
+    new_lawn_grass = LawnGrass("Трава", "Газонная", 250, 400, "Белая", 'Russia', 3)
     new_cat_test.add_products(new_product)
     assert new_product.price == 23000.0
     new_product.price = 0
@@ -118,6 +119,9 @@ def test_price():
     assert ''.join(new_cat_test.get_product_info) == 'Samsung Galaxy23, 25000.0 руб. Остаток: 2 шт.'
     Category.all_objects_product = []
     Category.all_objects_category = []
-    assert new_product + new_product2 == 77000.0
+    assert new_smartphone2 + new_smartphone == 54000
+    with pytest.raises(TypeError):
+        new_smartphone + new_lawn_grass
+
 
 # pytest --cov src --cov-report term-missing
