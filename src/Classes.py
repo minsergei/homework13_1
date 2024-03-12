@@ -4,17 +4,21 @@ class Product:
     price = float
     quantity = int
 
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name, description, price, quantity, colour='white'):
         self.name_product = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        self.colour = colour
 
     def __str__(self):
         return f'{self.name_product}, {self.__price} руб. Остаток: {self.quantity} штук.'
 
     def __add__(self, other):
-        return self.price * self.quantity + other.price * other.quantity
+        if issubclass(type(other), self.__class__):
+            return self.price * self.quantity + other.price * other.quantity
+        else:
+            raise TypeError('Классы не соответствуют')
 
     @classmethod
     def create_product(cls, *args):
@@ -57,6 +61,27 @@ class Product:
         return True
 
 
+class Smartphone(Product):
+    """
+    Новый подклосс Смартфон
+    """
+    def __init__(self, name, description, price, quantity, colour, efficiency, model, memory):
+        super().__init__(name, description, price, quantity, colour)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+
+
+class LawnGrass(Product):
+    """
+    Новый подклосс Газонная трава
+    """
+    def __init__(self, name, description, price, quantity, colour, country, period):
+        super().__init__(name, description, price, quantity, colour)
+        self.country = country
+        self.period = period
+
+
 class Category:
     name_category = str
     description = str
@@ -88,15 +113,10 @@ class Category:
         Category.all_objects_category.append(category)
         return category
 
-    def add_products_json(self, product):
-        """
-        добавляем продукт в список продуктов атрибута класса
-        """
-        self.all_objects_product.append(product)
-
     def add_products(self, product):
         """
         добавляем продукт в список продуктов атрибута категории и список продуктов атрибута класса
+        C проверкой что поступает объект класса продукт
         """
         if isinstance(product, Product):
             self.__products.append(product)
@@ -104,6 +124,12 @@ class Category:
             Category.number_of_product += 1
         else:
             return 'Не верный продукт'
+
+    def add_products_json(self, product):
+        """
+        добавляем продукт в список продуктов атрибута класса при работе с json файлом
+        """
+        self.all_objects_product.append(product)
 
     @property
     def get_product(self):

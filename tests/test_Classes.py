@@ -1,5 +1,5 @@
 import pytest
-from src.Classes import Product, Category
+from src.Classes import Product, Category, Smartphone, LawnGrass
 from pathlib import Path
 from src.Functions import load_data, created_objects
 
@@ -107,7 +107,8 @@ def test_create_product(add_product_category):
 def test_price():
     new_cat_test = Category.create_category("Telephone", "Лучшие телефоны", [])
     new_product = Product('Samsung Galaxy23', 'Флагман', 23000.0, 2)
-    new_product2 = Product('Samsung Galaxy20', 'Флагман', 27000.0, 1)
+    new_product2 = Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, 1, 'white', '1200ghz', 'Android13', 120)
+    new_product3 = LawnGrass("Трава", "Газонная", 250, 400, "Белая", 'Russia', 3)
     new_cat_test.add_products(new_product)
     assert new_product.price == 23000.0
     new_product.price = 0

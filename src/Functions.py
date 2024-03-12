@@ -14,7 +14,6 @@ def load_data(data):
 def created_objects(data_file_load):
     """
     создаём объекты класса категории и объекты класса продукты в аргументах объекта класса категории по json файлу
-    и отсеиваем с одинаковым названием
     """
 
     for item in data_file_load:
