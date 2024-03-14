@@ -37,7 +37,8 @@ def main():
     for item in Category.all_objects_category:
         print(f'_________________________________\n{item}\n---------------------------------')
         for item2 in item.get_product:
-            print(f'    {item2}')
+            # print(f'    {item2}')
+            print(repr(item2))
 
 
 if __name__ == '__main__':

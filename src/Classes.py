@@ -1,9 +1,30 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class AbstractProduct(ABC):
+    """Абстрактный метод"""
+
+    @classmethod
+    @abstractmethod
+    def create_product(cls, *args):
+        pass
+
+
+class ProdMixin:
+    def __repr__(self):
+        print('Был создан продукт')
+
+
+class Product(AbstractProduct, ProdMixin):
     name_product = str
     description = str
     price = float
     quantity = int
     colour = str
+
+    def __repr__(self):
+        super().__repr__()
+        return f'{self.name_product}, {self.description}, {self.quantity}, {self.price}'
 
     def __init__(self, name, description, price, quantity, colour='white'):
         self.name_product = name
@@ -33,7 +54,7 @@ class Product:
         for i in args[4]:
             product_name.append(i.name_product)
         if len(args[4]) == 0:
-            product = cls(args[0], args[1], args[2], args[3])
+            product = cls(*args)
             return product
         elif args[0] in product_name:
             for i in args[4]:
@@ -65,13 +86,17 @@ class Product:
         return True
 
 
-class Smartphone(Product):
+class Smartphone(Product, ProdMixin):
     """
     Новый подклосс Смартфон
     """
     efficiency = int
     model = str
     memory = int
+
+    def __repr__(self):
+        super().__repr__()
+        return f'{self.name_product}, {self.description}, {self.quantity}, {self.price}'
 
     def __init__(self, name, description, price, quantity, colour, efficiency, model, memory):
         super().__init__(name, description, price, quantity, colour)
@@ -80,12 +105,16 @@ class Smartphone(Product):
         self.memory = memory
 
 
-class LawnGrass(Product):
+class LawnGrass(Product, ProdMixin):
     """
     Новый подклосс Газонная трава
     """
     country = str
     period = int
+
+    def __repr__(self):
+        super().__repr__()
+        return f'{self.name_product}, {self.description}, {self.quantity}, {self.price}'
 
     def __init__(self, name, description, price, quantity, colour, country, period):
         super().__init__(name, description, price, quantity, colour)
@@ -93,7 +122,35 @@ class LawnGrass(Product):
         self.period = period
 
 
-class Category:
+class AbstractOrder(ABC):
+    '''Абстрактный класс для заказа и категории с общим методом добавить продукт'''
+    @abstractmethod
+    def add_products(self, product):
+        pass
+
+
+class Order(AbstractOrder):
+    '''Класа заказ'''
+    product = str
+    quantity = int
+    total_cost = float
+
+    def __init__(self, product, quantity, total_cost):
+        self.add_products(product)
+        self.product = product
+        self.quantity = quantity
+        self.total_cost = total_cost
+
+    def add_products(self, product):
+        """
+        добавляем продукт(Код для примера)
+        """
+        if not isinstance(product, Product):
+            return 'Не верный продукт'
+        return "Товар добавлен"
+
+
+class Category(AbstractOrder):
     name_category = str
     description = str
     __products = list
@@ -120,7 +177,7 @@ class Category:
         """
         метод создания объекта категории с условием отбора одинаковых имен
         """
-        category = cls(args[0], args[1], args[2])
+        category = cls(*args)
         Category.all_objects_category.append(category)
         return category
 
