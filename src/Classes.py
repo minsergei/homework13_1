@@ -30,6 +30,9 @@ class Product(AbstractProduct, ProdMixin):
         self.name_product = name
         self.description = description
         self.__price = price
+        """Проверяем при инициализации, что количество больше продукта 0"""
+        if quantity <= 0:
+            raise ValueError
         self.quantity = quantity
         self.colour = colour
 
@@ -63,7 +66,7 @@ class Product(AbstractProduct, ProdMixin):
                     if i.price < args[2]:
                         i.price = args[2]
         else:
-            product = cls(args[0], args[1], args[2], args[3])
+            product = cls(*args)
             return product
 
     @property
@@ -123,14 +126,14 @@ class LawnGrass(Product, ProdMixin):
 
 
 class AbstractOrder(ABC):
-    '''Абстрактный класс для заказа и категории с общим методом добавить продукт'''
+    """Абстрактный класс для заказа и категории с общим методом добавить продукт"""
     @abstractmethod
     def add_products(self, product):
         pass
 
 
 class Order(AbstractOrder):
-    '''Класа заказ'''
+    """Класа заказ"""
     product = str
     quantity = int
     total_cost = float
@@ -171,6 +174,17 @@ class Category(AbstractOrder):
 
     def __len__(self):
         return len(self.__products)
+
+    @property
+    def avg_price_product(self):
+        """Метод, который подсчитывает средний ценник всех товаров и обрабатывает исключение деления на ноль"""
+        try:
+            avg_price = 0
+            for i in self.__products:
+                avg_price += i.price
+            return round(avg_price/len(self.__products), 2)
+        except ZeroDivisionError:
+            return 0
 
     @classmethod
     def create_category(cls, *args):
