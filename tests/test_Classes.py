@@ -122,6 +122,17 @@ def test_price():
     assert new_smartphone2 + new_smartphone == 54000
     with pytest.raises(TypeError):
         new_smartphone + new_lawn_grass
+    assert new_cat_test.avg_price_product == 25000
 
 
+def test_raise():
+    with pytest.raises(ValueError):
+        Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, -5, 'white', 1200, 'Android13', 120)
+    Category.all_objects_product = []
+    Category.all_objects_category = []
+
+
+def test_raise_zero():
+    new_cat_test2 = Category.create_category("Telephone", "Лучшие телефоны", [])
+    new_cat_test2.avg_price_product == 0
 # pytest --cov src --cov-report term-missing

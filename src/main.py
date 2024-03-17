@@ -19,7 +19,7 @@ def main():
 
     # Создаём дополнительную категорию и продукты в ней
     new_cat = Category.create_category("Telephone", "Лучшие телефоны", [])
-    #
+
     new_product = Product.create_product('Samsung Galaxy23', 'Флагман', 23000.0, 12, Category.all_objects_product)
     new_cat.add_products(new_product)
     new_product2 = Product.create_product('Apone 13', 'The best', 150000.0, 1, Category.all_objects_product)
@@ -27,7 +27,7 @@ def main():
     # Создаём доп. продукт с названием которое уже есть. Он не добавится. Но цена и количество будут обрабатываться
     new_product3 = Product.create_product('Apone 13', 'The best!!!', 160000.0, 2, Category.all_objects_product)
     new_cat.add_products(new_product3)
-    new_product4 = Product.create_product('Apone 13', 'The best!!!', 160000.0, 2, Category.all_objects_product)
+    new_product4 = Product.create_product('Apone 13', 'The best!!!', 160000.0, 3, Category.all_objects_product)
     new_cat.add_products(new_product4)
 
     # Считаем вместе количество категорий и продуктов, созданных из файла json и вручную
@@ -36,6 +36,7 @@ def main():
     # Проверка __str__ и __len__
     for item in Category.all_objects_category:
         print(f'_________________________________\n{item}\n---------------------------------')
+        print(f'Средняя цена - {item.avg_price_product}')
         for item2 in item.get_product:
             # print(f'    {item2}')
             print(repr(item2))
