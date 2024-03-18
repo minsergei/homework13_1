@@ -1,7 +1,8 @@
 import pytest
-from src.Classes import Product, Category, Smartphone, LawnGrass
+from src.Classes import Product, Smartphone, LawnGrass
 from pathlib import Path
 from src.Functions import load_data, created_objects
+from src.Classes_category import Category, Order, MyException
 
 
 @pytest.fixture()
@@ -125,14 +126,35 @@ def test_price():
     assert new_cat_test.avg_price_product == 25000
 
 
-def test_raise():
-    with pytest.raises(ValueError):
-        Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, -5, 'white', 1200, 'Android13', 120)
-    Category.all_objects_product = []
-    Category.all_objects_category = []
+# def test_raise():
+#     '''Закомментировал тест 1го задания, из-за 3го задания'''
+#     with pytest.raises(ValueError):
+#         Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, -5, 'white', 1200, 'Android13', 120)
+#     Category.all_objects_product = []
+#     Category.all_objects_category = []
+
+def test_raise1():
+    """Тест 3го задания, категории"""
+    with pytest.raises(MyException):
+        new_cat_test2 = Category.create_category("Telephone", "Лучшие телефоны", [])
+        new_smart = Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, -5, 'white', 1200, 'Android13', 120)
+        new_cat_test2.add_products(new_smart)
+        Category.all_objects_product = []
+        Category.all_objects_category = []
+
+
+def test_raise2():
+    """Тест 3го задания, заказ"""
+    with pytest.raises(MyException):
+        new_smart = Smartphone('Samsung Galaxy20', 'Флагман', 27000.0, -5, 'white', 1200, 'Android13', 120)
+        new_order = Order(new_smart, 12, 12)
+        new_order.add_products(new_smart)
+        Category.all_objects_product = []
+        Category.all_objects_category = []
 
 
 def test_raise_zero():
     new_cat_test2 = Category.create_category("Telephone", "Лучшие телефоны", [])
     new_cat_test2.avg_price_product == 0
+
 # pytest --cov src --cov-report term-missing

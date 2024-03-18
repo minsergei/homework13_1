@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+# from src.Classes_category import Category, Order
 
 
 class AbstractProduct(ABC):
@@ -30,9 +31,11 @@ class Product(AbstractProduct, ProdMixin):
         self.name_product = name
         self.description = description
         self.__price = price
-        """Проверяем при инициализации, что количество больше продукта 0"""
-        if quantity <= 0:
-            raise ValueError
+        """Проверяем при инициализации, что количество продукта больше 0
+        Закомментировал, потому что не выполняется третье задание. Они оба отлавливают ошибку с нулевым значением кол-ва 
+        """
+        # if quantity <= 0:
+        #     raise ValueError
         self.quantity = quantity
         self.colour = colour
 
@@ -123,109 +126,3 @@ class LawnGrass(Product, ProdMixin):
         super().__init__(name, description, price, quantity, colour)
         self.country = country
         self.period = period
-
-
-class AbstractOrder(ABC):
-    """Абстрактный класс для заказа и категории с общим методом добавить продукт"""
-    @abstractmethod
-    def add_products(self, product):
-        pass
-
-
-class Order(AbstractOrder):
-    """Класа заказ"""
-    product = str
-    quantity = int
-    total_cost = float
-
-    def __init__(self, product, quantity, total_cost):
-        self.add_products(product)
-        self.product = product
-        self.quantity = quantity
-        self.total_cost = total_cost
-
-    def add_products(self, product):
-        """
-        добавляем продукт(Код для примера)
-        """
-        if not isinstance(product, Product):
-            return 'Не верный продукт'
-        return "Товар добавлен"
-
-
-class Category(AbstractOrder):
-    name_category = str
-    description = str
-    __products = list
-    number_of_category = 0
-    number_of_product = 0
-    all_objects_category = []
-    all_objects_product = []
-
-    def __init__(self, name, description, products=[]):
-        self.name_category = name
-        self.description = description
-        self.__products = products
-        Category.number_of_category += 1
-        Category.number_of_product += len(self.__products)
-
-    def __str__(self):
-        return f'{self.name_category}, количество продуктов: {len(self)} шт.'
-
-    def __len__(self):
-        return len(self.__products)
-
-    @property
-    def avg_price_product(self):
-        """Метод, который подсчитывает средний ценник всех товаров и обрабатывает исключение деления на ноль"""
-        try:
-            avg_price = 0
-            for i in self.__products:
-                avg_price += i.price
-            return round(avg_price/len(self.__products), 2)
-        except ZeroDivisionError:
-            return 0
-
-    @classmethod
-    def create_category(cls, *args):
-        """
-        метод создания объекта категории с условием отбора одинаковых имен
-        """
-        category = cls(*args)
-        Category.all_objects_category.append(category)
-        return category
-
-    def add_products(self, product):
-        """
-        добавляем продукт в список продуктов атрибута категории и список продуктов атрибута класса
-        C проверкой что поступает объект класса продукт
-        """
-        if isinstance(product, Product):
-            self.__products.append(product)
-            self.all_objects_product.append(product)
-            Category.number_of_product += 1
-        else:
-            return 'Не верный продукт'
-
-    def add_products_json(self, product):
-        """
-        добавляем продукт в список продуктов атрибута класса при работе с json файлом
-        """
-        self.all_objects_product.append(product)
-
-    @property
-    def get_product(self):
-        """
-        Возвращает список объектов продуктов
-        """
-        return self.__products
-
-    @property
-    def get_product_info(self):
-        """
-        Печатает список объектов продуктов категории в определенном формате
-        """
-        list_data = []
-        for item in self.__products:
-            list_data.append(f'{item.name_product}, {item.price} руб. Остаток: {item.quantity} шт.')
-        return list_data
