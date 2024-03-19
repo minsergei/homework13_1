@@ -24,7 +24,7 @@ class Product(AbstractProduct, ProdMixin):
 
     def __repr__(self):
         super().__repr__()
-        return f'{self.name_product}, {self.description}, {self.quantity}, {self.price}'
+        return f'{self.name_product}, {self.description}, {self.quantity}, {self.prices}'
 
     def __init__(self, name, description, price, quantity, colour='white'):
         self.name_product = name
