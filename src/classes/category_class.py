@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from src.Classes import Product, Smartphone, LawnGrass
+from src.classes.product_class import Product
 
 
 class MyException(Exception):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args):
         self.message = args[0] if args else '------------\nТовар не может быть с нулевым количеством'
 
     def __str__(self):
@@ -69,7 +69,7 @@ class Category(AbstractOrder):
         try:
             avg_price = 0
             for i in self.__products:
-                avg_price += i.price
+                avg_price += i.prices
             return round(avg_price / len(self.__products), 2)
         except ZeroDivisionError:
             return 0
@@ -117,17 +117,5 @@ class Category(AbstractOrder):
         """
         list_data = []
         for item in self.__products:
-            list_data.append(f'{item.name_product}, {item.price} руб. Остаток: {item.quantity} шт.')
+            list_data.append(f'{item.name_product}, {item.prices} руб. Остаток: {item.quantity} шт.')
         return list_data
-
-# try:
-#     new_cat = Category.create_category("Telephone", "Лучшие телефоны", [])
-#     new_product = Product.create_product('Samsung Galaxy23', 'Флагман', 23000.0, 0, Category.all_objects_product)
-#     new_cat.add_products(new_product)
-# except MyException as e:
-#     print(e)
-# else:
-#     print('Товар добавлен')
-#     print(new_product)
-# finally:
-#     print('Обработка добавления товара завершена')

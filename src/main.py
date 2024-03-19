@@ -1,7 +1,7 @@
 from pathlib import Path
-from src.Classes import Product, Smartphone, LawnGrass
-from src.Functions import load_data, created_objects
-from src.Classes_category import Category, Order, MyException
+from src.classes.product_class import Product
+from src.functions import load_data, created_objects
+from src.classes.category_class import Category, MyException
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
         #
         # Дальше код дополнительных проверок
         # Подгрузим еще один файла json с другими категориями и продуктами, в том числе повторяющиеся
-        all_data = Path(__file__).parent.joinpath('products2.json')
+        all_data = Path(__file__).parent.joinpath('products_addition.json')
         data_file_load = load_data(all_data)
         created_objects(data_file_load)
 
@@ -40,7 +40,6 @@ def main():
             print(f'_________________________________\n{item}\n---------------------------------')
             print(f'Средняя цена - {item.avg_price_product}')
             for item2 in item.get_product:
-                # print(f'    {item2}')
                 print(repr(item2))
     except MyException as e:
         print(e)

@@ -1,8 +1,8 @@
 import pytest
-from src.Classes import Product, Smartphone, LawnGrass
+from src.classes.product_class import Product, Smartphone, LawnGrass
 from pathlib import Path
-from src.Functions import load_data, created_objects
-from src.Classes_category import Category, Order, MyException
+from src.functions import load_data, created_objects
+from src.classes.category_class import Category, Order, MyException
 
 
 @pytest.fixture()
@@ -30,7 +30,7 @@ def product_smart():
 def test_product(product_smart):
     assert product_smart.name_product == 'Samsung S23'
     assert product_smart.description == '256Гб'
-    assert product_smart.price == 10000.0
+    assert product_smart.prices == 10000.0
     assert product_smart.quantity == 14
     Category.number_of_category = 0
     Category.number_of_product = 0
@@ -96,7 +96,7 @@ def test_create_product(add_product_category):
     list2 = []
     for i in Category.all_objects_product:
         list1.append(i.quantity)
-        list2.append(i.price)
+        list2.append(i.prices)
     assert list1 == [12, 3]
     assert list2 == [23000.0, 160000.0]
     Category.number_of_category = 0
@@ -112,11 +112,11 @@ def test_price():
     new_smartphone2 = Smartphone('Samsung 24', 'Флагман', 27000.0, 1, 'white', 1200, 'Android13', 120)
     new_lawn_grass = LawnGrass("Трава", "Газонная", 250, 400, "Белая", 'Russia', 3)
     new_cat_test.add_products(new_product)
-    assert new_product.price == 23000.0
-    new_product.price = 0
-    assert new_product.price == 23000.0
-    new_product.price = 25000.0
-    assert new_product.price == 25000.0
+    assert new_product.prices == 23000.0
+    new_product.prices = 0
+    assert new_product.prices == 23000.0
+    new_product.prices = 25000.0
+    assert new_product.prices == 25000.0
     assert ''.join(new_cat_test.get_product_info) == 'Samsung Galaxy23, 25000.0 руб. Остаток: 2 шт.'
     Category.all_objects_product = []
     Category.all_objects_category = []
@@ -155,6 +155,4 @@ def test_raise2():
 
 def test_raise_zero():
     new_cat_test2 = Category.create_category("Telephone", "Лучшие телефоны", [])
-    new_cat_test2.avg_price_product == 0
-
-# pytest --cov src --cov-report term-missing
+    assert new_cat_test2.avg_price_product == 0

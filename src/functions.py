@@ -1,6 +1,6 @@
 import json
-from src.Classes import Product, Smartphone, LawnGrass
-from src.Classes_category import Category, Order
+from src.classes.product_class import Product
+from src.classes.category_class import Category
 
 
 def load_data(data):

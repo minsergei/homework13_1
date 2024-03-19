@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-# from src.Classes_category import Category, Order
 
 
 class AbstractProduct(ABC):
@@ -47,7 +46,7 @@ class Product(AbstractProduct, ProdMixin):
         Проверка сложения на соответствие класса
         """
         if issubclass(type(other), self.__class__):
-            return self.price * self.quantity + other.price * other.quantity
+            return self.prices * self.quantity + other.prices * other.quantity
         else:
             raise TypeError('Классы не соответствуют')
 
@@ -66,30 +65,29 @@ class Product(AbstractProduct, ProdMixin):
             for i in args[4]:
                 if args[0] == i.name_product:
                     i.quantity += args[3]
-                    if i.price < args[2]:
-                        i.price = args[2]
+                    if i.prices < args[2]:
+                        i.prices = args[2]
         else:
             product = cls(*args)
             return product
 
     @property
-    def price(self):
+    def prices(self):
         return self.__price
 
-    @price.setter
-    def price(self, new_price):
+    @prices.setter
+    def prices(self, new_price):
         if new_price <= 0:
-            return 'Цена введена некорректная'
+            print('Цена введена некорректная')
         else:
             self.__price = new_price
 
-    @price.deleter
-    def price(self):
+    @prices.deleter
+    def prices(self):
         x = input('Если уверены что хотите удалить введите Y\n')
         if x.lower() == 'y':
             print('Удаляем цену')
             self.__price = None
-        return True
 
 
 class Smartphone(Product, ProdMixin):
